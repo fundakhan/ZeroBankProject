@@ -11,5 +11,5 @@ Feature: Transfer Funds Functionality
       Then User should see successfully transaction message
 
       Examples:
-         | Amount | Description       |
-         | 100    | my saving account |
+         | Amount | Description                   |
+         | 100    | Transfer to my credit account |
