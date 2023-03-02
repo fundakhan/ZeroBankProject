@@ -1,0 +1,8 @@
+name: Zero Bank
+'on': push
+jobs:
+  my-jobs:
+   runs-on: ubuntu-latest
+   steps:
+     - name: my-step
+       run: echo "Zero Bank"
