@@ -11,56 +11,22 @@ public class AddNewPayeeFunctionStep {
     @When("User click on Online Banking")
     public void userClickOnOnlineBanking() {
 
-        dialogContent.findAndClick("onlineBankingBtn");
+        dialogContent.clickOnOnlineBanking();
     }
 
     @Then("User click on Pay Bills")
     public void userClickOnPayBills() {
-
-
-        dialogContent.findAndClick("payBillsBtn");
-
-
-
-
+        dialogContent.clickOnPayBills();
     }
 
     @And("User click on Add New Payee and fill {string} and {string} and {string}")
-    public void userClickOnAddNewPayeeAndFillAndAnd(String name, String address, String account) {
-
-
-        dialogContent.findAndClick("addNewPayeeBtn");
-        dialogContent.findAndSend("payeeName",name);
-        dialogContent.findAndSend("payeeAddress",address);
-        dialogContent.findAndSend("accountInput",account);
-        dialogContent.findAndClick("addBtn");
-
+    public void userClickOnAddNewPayeeAndFillAndAnd(String payeeName, String payeeAddress, String account) {
+        dialogContent.AddNewPayeeAndFillTheInfo(payeeName,payeeAddress,account);
     }
 
-    @Then("User should see successfully message")
-    public void userShouldSeeSuccessfullyMessage() {
+    @Then("Result should be displayed successfully")
+    public void resultShouldBe(String expectedResult) {
 
-        dialogContent.findAndContainsText("successMessage","successfully");
-
-    }
-
-    @Then("Click on logout")
-    public void clickOnLogout() {
-
-        dialogContent.findAndClick("dropdownLogout");
-        dialogContent.findAndClick("logoutBtn");
-    }
-
-    @Then("User SignIn again")
-    public void userSignInAgain() {
-
-        dialogContent.findAndClick("signInButton");
-    }
-
-
-    @Then("User should see warning message")
-    public void userShouldSeeWarningMessage() {
-
-      dialogContent.findAndContainsText("alertContainer","Please");
+        dialogContent.verifyTheResult(expectedResult);
     }
 }

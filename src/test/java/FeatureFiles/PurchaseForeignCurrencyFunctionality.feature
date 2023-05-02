@@ -2,7 +2,7 @@ Feature: Purchase Foreign Functionality
 
 Background:
   Given User navigate to Zero Bank website
-  When User enter valid username and password
+  When User enter credentials as "username" and "password"
   Then User click on Online Banking
   Then User click on Pay Bills
 
@@ -13,4 +13,5 @@ Background:
 
       Examples:
         | amount |
-        | 100    |
+        | 200    |
+        | 150    |

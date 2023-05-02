@@ -4,24 +4,15 @@ import Utilities.BaseDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.testng.Assert;
 
-public class DialogContent extends Parent{
+public class DialogContent extends ParentPage {
 
     public DialogContent(){
         PageFactory.initElements(BaseDriver.getDriver(),this);
     }
 
-     @FindBy(id = "user_login")
-     private WebElement username;
 
-     @FindBy(id = "user_password")
-     private WebElement password;
-
-     @FindBy(css = "input[value='Sign in']")
-     private WebElement signInBtn;
-
-     @FindBy(xpath = "(//div[@class='custom carousel-caption'])[1]")
-     private WebElement homePageValidation;
 
      @FindBy(linkText = "More Services")
      private WebElement onlineBankingBtn;
@@ -33,10 +24,10 @@ public class DialogContent extends Parent{
      private WebElement addNewPayeeBtn;
 
      @FindBy(id = "np_new_payee_name")
-     private WebElement payeeName;
+     private WebElement payeeNameInput;
 
      @FindBy(id = "np_new_payee_address")
-     private WebElement payeeAddress;
+     private WebElement payeeAddressInput;
 
      @FindBy(id = "np_new_payee_account")
      private WebElement accountInput;
@@ -46,6 +37,9 @@ public class DialogContent extends Parent{
 
      @FindBy(id = "alert_content")
      private WebElement successMessage;
+
+     @FindBy(className = "board-header")
+     private WebElement makePaymentsMessage;
 
      @FindBy(xpath = "(//li[@class='dropdown'])[2]")
      private WebElement dropdownLogout;
@@ -58,6 +52,9 @@ public class DialogContent extends Parent{
 
      @FindBy(xpath = "/html/body/script")
      private WebElement alertContainer;
+
+    @FindBy(xpath = "//div[@class='alert alert-success']")
+    private WebElement successfullyTransactionMessage;
 
      @FindBy(linkText = "Purchase Foreign Currency")
      private WebElement purchaseBtn;
@@ -81,16 +78,16 @@ public class DialogContent extends Parent{
      private WebElement transferFundsBtn;
 
      @FindBy(id = "tf_fromAccountId")
-     private WebElement fromAccount;
+     private WebElement fromAccountSelect;
 
      @FindBy(id = "tf_toAccountId")
-     private WebElement toAccount;
+     private WebElement toAccountSelect;
 
      @FindBy(id = "tf_amount")
      private WebElement transferAmount;
 
      @FindBy(id = "tf_description")
-     private WebElement description;
+     private WebElement descriptionInput;
 
      @FindBy(id = "btn_submit")
      private WebElement continueBtn;
@@ -104,83 +101,70 @@ public class DialogContent extends Parent{
 
 
 
+    public void clickOnOnlineBanking(){
 
-
-
-
-
-
-    WebElement myElement;
-    public void findAndSend(String strElement, String value){
-
-        switch (strElement){
-            case "username":  myElement = username; break;
-            case "password":  myElement = password; break;
-            case "payeeName":  myElement = payeeName; break;
-            case "payeeAddress":  myElement = payeeAddress; break;
-            case "accountInput":  myElement = accountInput; break;
-            case "amountInput":  myElement = amountInput; break;
-            case "transferAmount": myElement = transferAmount; break;
-            case "description": myElement = description; break;
-
-        }
-
-        sendKeysFunction(myElement , value);
+     onlineBankingBtn.click();
     }
 
-    public void findAndClick(String strElement){
+    public void clickOnPayBills(){
 
-        switch (strElement){
-            case "signInBtn" : myElement = signInBtn; break;
-            case "onlineBankingBtn": myElement = onlineBankingBtn; break;
-            case "payBillsBtn": myElement = payBillsBtn; break;
-            case "addNewPayeeBtn": myElement = addNewPayeeBtn; break;
-            case "addBtn": myElement = addBtn; break;
-            case "dropdownLogout": myElement = dropdownLogout; break;
-            case "logoutBtn": myElement = logoutBtn; break;
-            case "signInButton": myElement = signInButton; break;
-            case "purchaseBtn": myElement = purchaseBtn; break;
-            case "currencyDropdown": myElement = currencyDropdown; break;
-            case "optionCad": myElement = optionCad; break;
-            case "usdRadioBtn": myElement = usdRadioBtn; break;
-            case "purchaseSubmitBtn": myElement = purchaseSubmitBtn; break;
-            case "transferFundsBtn": myElement = transferFundsBtn; break;
-            case "toAccount": myElement = toAccount; break;
-            case "continueBtn": myElement = continueBtn; break;
-            case "submitBtn": myElement = submitBtn; break;
-
-
-
-        }
-
-        waitUntilLoading();
-        clickFunction(myElement);
+     payBillsBtn.click();
     }
 
-    public void findAndContainsText(String strElement , String text){
-
-        switch (strElement){
-            case "homePageValidation" : myElement = homePageValidation; break;
-            case "successMessage" : myElement = successMessage; break;
-            case "alertContainer" : myElement = alertContainer; break;
-            case "successTransaction" : myElement = successTransaction; break;
-
-        }
-
-
-        verifyContainsText(myElement,text);
+    public void AddNewPayeeAndFillTheInfo(String payeeName, String payeeAddress, String account){
+     addNewPayeeBtn.click();
+     sendKeysFunction(payeeNameInput,payeeName);
+     sendKeysFunction(payeeAddressInput,payeeAddress);
+     sendKeysFunction(accountInput,account);
+     addBtn.click();
     }
 
-    public void searchAndDelete(String searchText){
-        findAndSend("searchInput",searchText);
-        findAndClick("searchButton");
+    public void verifyTheResult(String expectedResult){
 
-
-        waitUntilLoading(); // parent da koydugumuz methodu buraya cagirip bekleme yaptiriyoruz. search button unu calistirdiginda sayfanin yuklenmesi kisminda bekliyor
-
-        findAndClick("deleteButton"); //silme butonuna bas
-        findAndClick("deleteDialogBtn"); //dialogdaki silme butununa bas
-
+   // expectedResult = "The new payee Apple was successfully created.";
+        assertTrueValidationText(successMessage,expectedResult);
 
     }
+
+    public void clickOnPurchaseForeignCurrency(){
+
+        clickFunction(purchaseBtn);
+    }
+
+    public void selectTheCADAndFillAmount(String currency,String amount){
+        selectFunctionByValue(currencyDropdown,currency);
+        sendKeysFunction(amountInput,amount);
+        clickFunction(usdRadioBtn);
+        clickFunction(purchaseSubmitBtn);
+    }
+
+    public void verifyTextMessage(){
+
+        String result = "Foreign currency cash was successfully purchased.";
+        assertTrueValidationText(successMessage,result);
+    }
+
+    public void clickOnTransferFunds(){
+        clickFunction(transferFundsBtn);
+    }
+
+    public void selectFromToAccountAndToAccountAndFillForm(String fromAccount, String toAccount, String amount, String description ){
+
+        selectFunctionByValue(fromAccountSelect,fromAccount);
+        selectFunctionByValue(toAccountSelect,toAccount);
+        sendKeysFunction(transferAmount,amount);
+        sendKeysFunction(descriptionInput,description);
+        clickFunction(continueBtn);
+        clickFunction(submitBtn);
+    }
+
+    public void verifySubmittedTransaction(){
+
+     //   String result = "You successfully submitted your transaction.";
+        Assert.assertTrue(successfullyTransactionMessage.getText().toLowerCase().contains("successfully".toLowerCase()));
+    }
+
+
+
+
 }

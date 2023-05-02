@@ -12,12 +12,15 @@ public class Hooks {
     public void before(){
 
         System.out.println("Scenario Started!");
+        BaseDriver.getDriver().get("http://zero.webappsecurity.com/login.html");
+        BaseDriver.getDriver().manage().window().maximize();
 
     }
     @After
     public void after(){
 
         // seneryo hatali ise ekran goruntusunu al
-        BaseDriver.getDriver();
+        BaseDriver.getDriver().quit();
+
     }
 }
